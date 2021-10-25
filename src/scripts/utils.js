@@ -15,7 +15,7 @@ export const drawPieSlice = (ctx, centerX, centerY, radius, startAngle, endAngle
   ctx.fill();
 };
 
-export const getRandomHexColors = (num = 100) =>
+export const getRandomHexColors = (num) =>
   Array(num)
     .fill('')
     .map(() => '#' + Math.floor(Math.random() * 16777215).toString(16));
