@@ -3,6 +3,11 @@
 
 /** @type {import("snowpack").SnowpackUserConfig } */
 module.exports = {
+  alias: {
+    '@app': './src',
+    '@styles': './src/styles',
+    '@scripts': './src/scripts',
+  },
   mount: {
     /* ... */
   },
