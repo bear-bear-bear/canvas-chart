@@ -1,11 +1,12 @@
-import { drawPieSlice } from './utils';
+import { drawPieSlice, getRandomHexColors } from './utils';
 
 export default class PieChart {
-  constructor({ canvas, data, colors }) {
+  constructor({ canvas, data, colors = getRandomHexColors(10), centerHoleSize = 0 }) {
     this.canvas = canvas;
     this.ctx = this.canvas.getContext('2d');
     this.data = data;
     this.colors = colors;
+    this.centerHoleSize = centerHoleSize;
   }
 
   draw() {
@@ -31,6 +32,21 @@ export default class PieChart {
 
       startAngle += sliceAngle;
       colorIndex++;
+
+      if (this.centerHoleSize !== 0) {
+        if (this.centerHoleSize >= 1) {
+          throw new Error('centerHoleSize는 1보다 작아야 합니다.');
+        }
+        drawPieSlice(
+          this.ctx,
+          centerX,
+          centerY,
+          this.centerHoleSize * Math.min(centerX, centerY),
+          0,
+          2 * Math.PI,
+          '#fff'
+        );
+      }
     });
   }
 }

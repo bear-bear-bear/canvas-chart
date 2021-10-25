@@ -38,3 +38,8 @@ export const drawPieSlice = (ctx, centerX, centerY, radius, startAngle, endAngle
   ctx.closePath();
   ctx.fill();
 };
+
+export const getRandomHexColors = (num = 100) =>
+  Array(num)
+    .fill('')
+    .map(() => '#' + Math.floor(Math.random() * 16777215).toString(16));
