@@ -10,5 +10,26 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 3rem;
+}
+
+main {
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+  position: relative;
+  top: 0;
+  opacity: 0;
+  animation: raise-up 0.7s ease-in-out forwards;
+}
+
+@keyframes raise-up {
+  from {
+    opacity: 0;
+    top: 2rem;
+  }
+
+  to {
+    opacity: 1;
+    top: 0;
+  }
 }
