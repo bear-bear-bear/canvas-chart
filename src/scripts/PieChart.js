@@ -1,14 +1,16 @@
 import { drawPieSlice, getRandomHexColors } from './utils';
 
 export default class PieChart {
-  constructor({ canvas, data, colors = getRandomHexColors(10), centerHoleSize = 0 }) {
+  constructor({ canvas, legend, data, colors = getRandomHexColors(10), centerHoleSize = 0 }) {
     this.canvas = canvas;
     this.ctx = this.canvas.getContext('2d');
     this.centerX = this.canvas.width / 2;
     this.centerY = this.canvas.height / 2;
     this.radius = Math.min(this.centerX, this.centerY);
-    this.data = data;
-    this.dataValues = Object.values(this.data);
+    this.legend = legend;
+    this.sortedData = Object.fromEntries(Object.entries(data).sort(([, a], [, b]) => b - a)); // 내림차순 정렬
+    this.dataKeys = Object.keys(this.sortedData);
+    this.dataValues = Object.values(this.sortedData);
     this.totalValue = this.dataValues.reduce((acc, curr) => acc + curr, 0);
     this.colors = colors;
     this.centerHoleSize = centerHoleSize;
@@ -70,7 +72,7 @@ export default class PieChart {
       const Label_Pos_Fix_Value = 12;
 
       this.ctx.fillStyle = '#fff';
-      this.ctx.font = 'bold 20px san-serif';
+      this.ctx.font = 'bold 1.3rem san-serif';
       this.ctx.fillText(
         valuePercentage,
         labelX - Label_Pos_Fix_Value,
@@ -81,9 +83,25 @@ export default class PieChart {
     });
   }
 
+  #drawLegend() {
+    let colorIndex = 0;
+    const legendHTML = this.dataKeys.reduce((acc, currValue) => {
+      const currHTML = `
+<div style='display: flex; gap: 0.5rem'>
+  <div style='width: 1.3rem; height: 1.3rem; background-color: ${this.colors[colorIndex++]};'></div>
+  ${currValue}
+</div>
+      `.trim();
+
+      return acc + currHTML;
+    }, '');
+    this.legend.innerHTML = legendHTML;
+  }
+
   draw() {
     this.#drawChart();
     this.#drawLabel();
+    this.#drawLegend();
     if (this.centerHoleSize) this.#drawCenterHole();
   }
 }
