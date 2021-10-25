@@ -85,11 +85,11 @@ export default class PieChart {
 
   #drawLegend() {
     let colorIndex = 0;
-    const legendHTML = this.dataKeys.reduce((acc, currValue) => {
+    const legendHTML = this.dataKeys.reduce((acc, currKey) => {
       const currHTML = `
 <div style='display: flex; gap: 0.5rem'>
   <div style='width: 1.3rem; height: 1.3rem; background-color: ${this.colors[colorIndex++]};'></div>
-  ${currValue}
+  ${currKey}<span style='color: #444'>(${this.sortedData[currKey]})</span>
 </div>
       `.trim();
 
