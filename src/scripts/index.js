@@ -9,7 +9,7 @@ const pieChart = new PieChart({
   canvas,
   data,
   // colors: ['#fde23e', '#f16e23', '#57d9ff', '#937e88'],
-  centerHoleSize: 0.5,
+  centerHoleSize: 0.4,
 });
 
 pieChart.draw();
