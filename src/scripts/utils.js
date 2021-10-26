@@ -19,3 +19,28 @@ export const getRandomHexColors = (num) =>
   Array(num)
     .fill('')
     .map(() => '#' + Math.floor(Math.random() * 16777215).toString(16));
+
+/**
+ * @param {Array.<{name: String, initialValue: *}>} dataInfo
+ * 세션 스토리지 내에서 쓰일 이름과 해당 데이터의 초기값으로 구성된 객체의 배열
+ *
+ * @returns {{ getter: { [name: String]: () => value }, setter: { [name: String]: (value) => void } }}
+ */
+export const createSessionStorageHelper = (dataInfo) => {
+  const getter = dataInfo.reduce((acc, { name, initialValue }) => {
+    acc[name] = () => {
+      const savedValue = JSON.parse(window.sessionStorage.getItem(name));
+      return savedValue || initialValue;
+    };
+    return acc;
+  }, {});
+
+  const setter = dataInfo.reduce((acc, { name }) => {
+    acc[name] = (nextValue) => {
+      window.sessionStorage.setItem(name, JSON.stringify(nextValue));
+    };
+    return acc;
+  }, {});
+
+  return { getter, setter };
+};
