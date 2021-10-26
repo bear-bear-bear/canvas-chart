@@ -36,8 +36,6 @@ const drawChart = () => {
     centerHoleSize: getter.centerHoleSize(),
   });
 
-  console.log(getter.centerHoleSize());
-
   pieChart.draw();
 };
 
