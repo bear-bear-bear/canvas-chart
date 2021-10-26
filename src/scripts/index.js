@@ -3,7 +3,6 @@ import initialData from './data';
 import { getRandomHexColors, createSessionStorageHelper } from './utils';
 
 const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
 const legend = document.getElementById('legend');
 const randomColorButton = document.getElementById('randomColorButton');
 const centerHoleSizeRange = document.getElementById('centerHoleSizeRange');
@@ -23,25 +22,25 @@ const { getter, setter } = createSessionStorageHelper([
   },
 ]);
 
-const drawChart = () => {
-  const pieChart = new PieChart({
-    canvas,
-    legend,
-    data: getter.data(),
-    colors: getter.colors(),
-    centerHoleSize: getter.centerHoleSize(),
-  });
+const chart = new PieChart({
+  canvas,
+  legend,
+  data: getter.data(),
+  colors: getter.colors(),
+  centerHoleSize: getter.centerHoleSize(),
+});
 
-  pieChart.draw();
-};
-
-const reDrawChart = () => {
+const reDrawChart = (willChangeParamNames = ['']) => {
   legend.innerHTML = '';
+  chart.clear();
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.beginPath();
+  const willChangeParams = willChangeParamNames.reduce((acc, paramName) => {
+    acc[paramName] = getter[paramName]();
+    return acc;
+  }, {});
 
-  drawChart();
+  chart.set(willChangeParams);
+  chart.draw();
 };
 
 const handleRandomColorButtonClick = () => {
@@ -50,18 +49,18 @@ const handleRandomColorButtonClick = () => {
   const randomColors = getRandomHexColors(Object.keys(data).length);
   setter.colors(randomColors);
 
-  reDrawChart();
+  reDrawChart(['colors']);
 };
 
 const handleCenterHoleSizeRangeChange = (e) => {
   const nextCenterHoleSize = e.target.value / 10;
   setter.centerHoleSize(nextCenterHoleSize);
 
-  reDrawChart();
+  reDrawChart(['centerHoleSize']);
 };
 
 const init = () => {
-  drawChart();
+  chart.draw();
 
   randomColorButton.addEventListener('click', handleRandomColorButtonClick, false);
   centerHoleSizeRange.addEventListener('change', handleCenterHoleSizeRangeChange, false);

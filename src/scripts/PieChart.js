@@ -8,12 +8,20 @@ export default class PieChart {
     this.centerY = this.canvas.height / 2;
     this.radius = Math.min(this.centerX, this.centerY);
     this.legend = legend;
-    this.sortedData = Object.fromEntries(Object.entries(data).sort(([, a], [, b]) => b - a)); // 내림차순 정렬
+    this.colors = colors;
+    this.centerHoleSize = centerHoleSize;
+    this.data = data;
+    this.sortedData = {};
+    this.dataKeys = [];
+    this.dataValues = [];
+    this.totalValue = 0;
+  }
+
+  #initData() {
+    this.sortedData = Object.fromEntries(Object.entries(this.data).sort(([, a], [, b]) => b - a)); // 내림차순 정렬
     this.dataKeys = Object.keys(this.sortedData);
     this.dataValues = Object.values(this.sortedData);
     this.totalValue = this.dataValues.reduce((acc, curr) => acc + curr, 0);
-    this.colors = colors;
-    this.centerHoleSize = centerHoleSize;
   }
 
   #drawChart() {
@@ -99,9 +107,24 @@ export default class PieChart {
   }
 
   draw() {
+    this.#initData();
     this.#drawChart();
     this.#drawLabel();
     this.#drawLegend();
     if (this.centerHoleSize) this.#drawCenterHole();
+  }
+
+  clear() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.beginPath();
+  }
+
+  set(changableParams) {
+    for (const param in changableParams) {
+      if (!(param in this)) return;
+      if (param === 'data') this.#initData();
+
+      this[param] = changableParams[param];
+    }
   }
 }
