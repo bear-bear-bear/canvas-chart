@@ -53,7 +53,7 @@ export const getGradationHexColors = (num) => {
  *
  * @returns {{ getter: { [name: String]: () => value }, setter: { [name: String]: (value) => void } }}
  */
-export const createSessionStorageHelper = (dataInfo) => {
+export const getSessionStorageHelper = (dataInfo) => {
   const getter = dataInfo.reduce((acc, { name, initialValue }) => {
     acc[name] = () => {
       const savedValue = JSON.parse(window.sessionStorage.getItem(name));

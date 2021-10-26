@@ -1,13 +1,13 @@
 import PieChart from './PieChart';
 import initialData from './data';
-import { getGradationHexColors, createSessionStorageHelper } from './utils';
+import { getGradationHexColors, getSessionStorageHelper } from './utils';
 
 const canvas = document.getElementById('canvas');
 const legend = document.getElementById('legend');
 const randomColorButton = document.getElementById('randomColorButton');
 const centerHoleSizeRange = document.getElementById('centerHoleSizeRange');
 
-const { getter, setter } = createSessionStorageHelper([
+const { getter, setter } = getSessionStorageHelper([
   {
     name: 'data',
     initialValue: initialData,
