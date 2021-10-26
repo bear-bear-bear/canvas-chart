@@ -1,6 +1,6 @@
 import PieChart from './PieChart';
 import initialData from './data';
-import { getRandomHexColors, createSessionStorageHelper } from './utils';
+import { getGradationHexColors, createSessionStorageHelper } from './utils';
 
 const canvas = document.getElementById('canvas');
 const legend = document.getElementById('legend');
@@ -46,7 +46,7 @@ const reDrawChart = (willChangeParamNames = ['']) => {
 const handleRandomColorButtonClick = () => {
   const savedData = getter.data();
   const data = savedData || initialData;
-  const randomColors = getRandomHexColors(Object.keys(data).length);
+  const randomColors = getGradationHexColors(Object.keys(data).length);
   setter.colors(randomColors);
 
   reDrawChart(['colors']);

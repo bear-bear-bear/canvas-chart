@@ -1,7 +1,7 @@
-import { drawPieSlice, getRandomHexColors } from './utils';
+import { drawPieSlice, getGradationHexColors } from './utils';
 
 export default class PieChart {
-  constructor({ canvas, legend, data, colors = getRandomHexColors(10), centerHoleSize = 0 }) {
+  constructor({ canvas, legend, data, colors = getGradationHexColors(10), centerHoleSize = 0 }) {
     this.canvas = canvas;
     this.ctx = this.canvas.getContext('2d');
     this.centerX = this.canvas.width / 2;
@@ -96,8 +96,10 @@ export default class PieChart {
     const legendHTML = this.dataKeys.reduce((acc, currKey) => {
       const currHTML = `
 <div style='display: flex; gap: 0.5rem'>
-  <div style='width: 1.3rem; height: 1.3rem; background-color: ${this.colors[colorIndex++]};'></div>
-  ${currKey}<span style='color: #444'>(${this.sortedData[currKey]})</span>
+  <div style='width: 1.3rem; height: 1.3rem; background-color: ${
+    this.colors[colorIndex++ % this.colors.length]
+  };'></div>
+  ${currKey}<span style='color: #777'>(${this.sortedData[currKey]})</span>
 </div>
       `.trim();
 

@@ -15,10 +15,37 @@ export const drawPieSlice = (ctx, centerX, centerY, radius, startAngle, endAngle
   ctx.fill();
 };
 
-export const getRandomHexColors = (num) =>
-  Array(num)
+/**
+ * @param {Number} num 반환할 색상의 개수
+ */
+export const getGradationHexColors = (num) => {
+  const getRandomInt = (_min, _max) => {
+    const min = Math.floor(_min);
+    const max = Math.ceil(_max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  };
+
+  const randomColorDec = getRandomInt(6000000, 12500000); // excepted too much brightness or darkness (0~16777216)
+  const GRADIENT_DEGREE = 1750;
+  const isAscending = randomColorDec - num * GRADIENT_DEGREE < 0;
+
+  const { hexColors } = Array(num)
     .fill('')
-    .map(() => '#' + Math.floor(Math.random() * 16777215).toString(16));
+    .reduce(
+      ({ hexColors, nextColorDec }) => {
+        const hexColor = `#${nextColorDec.toString(16).padStart(6, 0)}`;
+        return {
+          hexColors: hexColors.concat(hexColor),
+          nextColorDec: isAscending
+            ? nextColorDec + GRADIENT_DEGREE
+            : nextColorDec - GRADIENT_DEGREE,
+        };
+      },
+      { hexColors: [], nextColorDec: randomColorDec }
+    );
+
+  return hexColors;
+};
 
 /**
  * @param {Array.<{name: String, initialValue: *}>} dataInfo
