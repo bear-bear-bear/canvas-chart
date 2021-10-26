@@ -26,8 +26,8 @@ export const getGradationHexColors = (num) => {
   };
 
   const randomColorDec = getRandomInt(6000000, 12500000); // excepted too much brightness or darkness (0~16777216)
-  const GRADIENT_DEGREE = 1750;
-  const isAscending = randomColorDec - num * GRADIENT_DEGREE < 0;
+  const GRADATION_DEGREE = 1750;
+  const isAscending = randomColorDec - num * GRADATION_DEGREE < 0;
 
   const { hexColors } = Array(num)
     .fill('')
@@ -37,8 +37,8 @@ export const getGradationHexColors = (num) => {
         return {
           hexColors: hexColors.concat(hexColor),
           nextColorDec: isAscending
-            ? nextColorDec + GRADIENT_DEGREE
-            : nextColorDec - GRADIENT_DEGREE,
+            ? nextColorDec + GRADATION_DEGREE
+            : nextColorDec - GRADATION_DEGREE,
         };
       },
       { hexColors: [], nextColorDec: randomColorDec }
