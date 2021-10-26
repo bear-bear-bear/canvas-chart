@@ -39,8 +39,8 @@ main {
 footer {
   display: flex;
   justify-content: center;
-  gap: 2rem;
-  padding: 1rem 2.33rem;
+  gap: 1.33rem;
+  padding: 1rem 3rem;
   border: 1px solid black;
   border-radius: 1em;
 }
@@ -53,4 +53,8 @@ footer > section {
 
 .label-section {
   align-items: flex-end;
+}
+
+.label-section > label::after {
+  content: ':';
 }
