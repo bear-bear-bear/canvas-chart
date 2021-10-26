@@ -43,27 +43,29 @@ const reDrawChart = (willChangeParamNames = ['']) => {
   chart.draw();
 };
 
-const handleRandomColorButtonClick = () => {
-  const savedData = getter.data();
-  const data = savedData || initialData;
-  const randomColors = getGradationHexColors(Object.keys(data).length);
-  setter.colors(randomColors);
+const eventHandler = {
+  randomColorButtonClick: () => {
+    const savedData = getter.data();
+    const data = savedData || initialData;
+    const randomColors = getGradationHexColors(Object.keys(data).length);
+    setter.colors(randomColors);
 
-  reDrawChart(['colors']);
-};
+    reDrawChart(['colors']);
+  },
 
-const handleCenterHoleSizeRangeChange = (e) => {
-  const nextCenterHoleSize = e.target.value / 10;
-  setter.centerHoleSize(nextCenterHoleSize);
+  centerHoleSizeRangeChange: (e) => {
+    const nextCenterHoleSize = e.target.value / 10;
+    setter.centerHoleSize(nextCenterHoleSize);
 
-  reDrawChart(['centerHoleSize']);
+    reDrawChart(['centerHoleSize']);
+  },
 };
 
 const init = () => {
   chart.draw();
 
-  randomColorButton.addEventListener('click', handleRandomColorButtonClick, false);
-  centerHoleSizeRange.addEventListener('change', handleCenterHoleSizeRangeChange, false);
+  randomColorButton.addEventListener('click', eventHandler.randomColorButtonClick, false);
+  centerHoleSizeRange.addEventListener('change', eventHandler.centerHoleSizeRangeChange, false);
 };
 
 init();
