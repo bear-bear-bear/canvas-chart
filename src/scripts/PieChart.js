@@ -96,7 +96,7 @@ export default class PieChart {
       const currItem = `
 <li>
   <div style='background-color: ${this.colors[colorIndex++ % this.colors.length]};'></div>
-  <p>${currKey}</p>
+  <span title="${currKey}">${currKey}</span>
   <span>(${this.sortedData[currKey]})</span>
   <button>X</button>
 </li>

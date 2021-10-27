@@ -55,12 +55,16 @@ main {
 #legend li > div {
   width: 1.3rem;
   height: 1.3rem;
+  flex-shrink: 0;
 }
 
-#legend li > p {
+#legend li > span:first-of-type {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-#legend li > span {
+#legend li > span:last-of-type {
   color: #777;
 }
 
