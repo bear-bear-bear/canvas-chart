@@ -24,6 +24,56 @@ main {
   animation: raise-up 0.7s ease-in-out forwards;
 }
 
+#legend ul {
+  width: 12rem;
+  height: 15rem;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.33rem;
+  overflow-y: scroll;
+}
+
+#legend ul::-webkit-scrollbar {
+  width: 10px;
+  background-color: #ccc
+}
+#legend ul::-webkit-scrollbar-thumb {
+  width: 10px;
+  background-color: #222;
+}
+
+#legend li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-right: 2rem; /* For close button */
+  list-style: none;
+}
+
+#legend li > div {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+#legend li > p {
+}
+
+#legend li > span {
+  color: #777;
+}
+
+#legend li > button {
+  position: absolute;
+  right: 1rem;
+  background-color: inherit;
+  border: none;
+  font-weight: 700;
+  color: red;
+  cursor: pointer;
+}
+
 @keyframes raise-up {
   from {
     opacity: 0;

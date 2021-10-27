@@ -92,20 +92,20 @@ export default class PieChart {
   }
 
   #drawLegend() {
-    let colorIndex = 0;
-    const legendHTML = this.dataKeys.reduce((acc, currKey) => {
-      const currHTML = `
-<div style='display: flex; gap: 0.5rem'>
-  <div style='width: 1.3rem; height: 1.3rem; background-color: ${
-    this.colors[colorIndex++ % this.colors.length]
-  };'></div>
-  ${currKey}<span style='color: #777'>(${this.sortedData[currKey]})</span>
-</div>
+    const itemsHTML = this.dataKeys.reduce((acc, currKey, colorIndex) => {
+      const currItem = `
+<li>
+  <div style='background-color: ${this.colors[colorIndex++ % this.colors.length]};'></div>
+  <p>${currKey}</p>
+  <span>(${this.sortedData[currKey]})</span>
+  <button>X</button>
+</li>
       `.trim();
 
-      return acc + currHTML;
+      return acc + currItem;
     }, '');
-    this.legend.innerHTML = legendHTML;
+
+    this.legend.innerHTML = `<ul>${itemsHTML}</ul>`;
   }
 
   draw() {
@@ -117,6 +117,8 @@ export default class PieChart {
   }
 
   clear() {
+    this.legend.innerHTML = '';
+
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.beginPath();
   }

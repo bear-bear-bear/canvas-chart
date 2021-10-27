@@ -31,7 +31,6 @@ const chart = new PieChart({
 });
 
 const reDrawChart = (willChangeParamNames = ['']) => {
-  legend.innerHTML = '';
   chart.clear();
 
   const willChangeParams = willChangeParamNames.reduce((acc, paramName) => {
