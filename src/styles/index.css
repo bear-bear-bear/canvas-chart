@@ -24,7 +24,7 @@ main {
   animation: raise-up 0.7s ease-in-out forwards;
 }
 
-#legend ul {
+#legend {
   width: 12rem;
   height: 15rem;
   max-height: 100%;
@@ -34,11 +34,11 @@ main {
   overflow-y: scroll;
 }
 
-#legend ul::-webkit-scrollbar {
+#legend::-webkit-scrollbar {
   width: 10px;
   background-color: #ccc
 }
-#legend ul::-webkit-scrollbar-thumb {
+#legend::-webkit-scrollbar-thumb {
   width: 10px;
   background-color: #222;
 }
@@ -58,14 +58,20 @@ main {
   flex-shrink: 0;
 }
 
-#legend li > span:first-of-type {
+#legend li > span.data-name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-#legend li > span:last-of-type {
+#legend li > span.data-value {
   color: #777;
+}
+#legend li > span.data-value::before {
+  content: '(';
+}
+#legend li > span.data-value::after {
+  content: ')';
 }
 
 #legend li > button {

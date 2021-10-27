@@ -60,12 +60,51 @@ const eventHandler = {
   },
 };
 
-const init = () => {
-  chart.draw();
+const registerLegendObserver = () => {
+  const observer = new MutationObserver(([mutation]) => {
+    const mutateType = mutation.addedNodes[0] ? 'added' : 'removed';
 
+    switch (mutateType) {
+      case 'added': {
+        const addedItem = mutation.addedNodes[0];
+        const dataName = addedItem.querySelector('.data-name').textContext;
+        const dataValue = addedItem.querySelector('.data-value').textContext;
+        const nextData = { ...getter.data(), [dataName]: dataValue };
+        setter.data(nextData);
+
+        break;
+      }
+      case 'removed': {
+        const isReDraw = mutation.removedNodes.length > 1;
+        if (isReDraw) return;
+
+        const removedItem = mutation.removedNodes[0];
+        const willRemoveDataName = removedItem.querySelector('.data-name').textContent;
+        const { [willRemoveDataName]: _, ...nextData } = getter.data();
+        setter.data(nextData);
+
+        break;
+      }
+      default:
+    }
+
+    reDrawChart(['data']);
+  });
+  observer.observe(legend, { childList: true });
+};
+
+const initCenterHoleSizeRange = () => {
   centerHoleSizeRange.value = getter.centerHoleSize()
     ? getter.centerHoleSize() * 10
     : centerHoleSizeRange.value;
+};
+
+const init = () => {
+  chart.draw();
+
+  initCenterHoleSizeRange();
+  registerLegendObserver();
+
   centerHoleSizeRange.addEventListener('change', eventHandler.centerHoleSizeRangeChange, false);
   randomColorButton.addEventListener('click', eventHandler.randomColorButtonClick, false);
 };

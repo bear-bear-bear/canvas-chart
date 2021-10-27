@@ -96,8 +96,8 @@ export default class PieChart {
       const currItem = `
 <li>
   <div style='background-color: ${this.colors[colorIndex++ % this.colors.length]};'></div>
-  <span title="${currKey}">${currKey}</span>
-  <span>(${this.sortedData[currKey]})</span>
+  <span class="data-name" title="${currKey}">${currKey}</span>
+  <span class="data-value">${this.sortedData[currKey]}</span>
   <button>X</button>
 </li>
       `.trim();
@@ -105,7 +105,13 @@ export default class PieChart {
       return acc + currItem;
     }, '');
 
-    this.legend.innerHTML = `<ul>${itemsHTML}</ul>`;
+    const handleRemoveButtonClick = (e) => {
+      if (e.target.tagName !== 'BUTTON') return;
+      e.target.closest('li').remove();
+    };
+
+    this.legend.innerHTML = itemsHTML;
+    this.legend.addEventListener('click', handleRemoveButtonClick, false);
   }
 
   draw() {
