@@ -63,8 +63,11 @@ const eventHandler = {
 const init = () => {
   chart.draw();
 
-  randomColorButton.addEventListener('click', eventHandler.randomColorButtonClick, false);
+  centerHoleSizeRange.value = getter.centerHoleSize()
+    ? getter.centerHoleSize() * 10
+    : centerHoleSizeRange.value;
   centerHoleSizeRange.addEventListener('change', eventHandler.centerHoleSizeRangeChange, false);
+  randomColorButton.addEventListener('click', eventHandler.randomColorButtonClick, false);
 };
 
 init();
