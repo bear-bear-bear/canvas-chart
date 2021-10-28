@@ -1,5 +1,5 @@
 import PieChart from './PieChart';
-import initialData from './data';
+import initialData from './initialData.json';
 import { getGradationHexColors, getSessionStorageHelper } from './utils';
 
 const canvas = document.getElementById('canvas');
