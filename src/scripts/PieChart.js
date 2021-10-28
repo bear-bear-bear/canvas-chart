@@ -145,6 +145,8 @@ export default class PieChart {
       if (e.path[0].id !== 'dataAddButton') return;
 
       const [nameInput, valueInput] = this.legendAddSection.querySelectorAll('input');
+      if (!(nameInput.value && valueInput.value)) return;
+
       const randomColorIndex = Math.floor(Math.random() * this.colors.length);
       const backgroundColor = this.colors[randomColorIndex];
       const willAddItemInnerHTML = getItemInnerHTML(
