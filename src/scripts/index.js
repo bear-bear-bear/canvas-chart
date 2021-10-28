@@ -7,6 +7,7 @@ const legendUL = document.getElementById('legendUL');
 const legendAddSection = document.getElementById('legendAddSection');
 const randomColorButton = document.getElementById('randomColorButton');
 const centerHoleSizeRange = document.getElementById('centerHoleSizeRange');
+const sortLegendButton = document.getElementById('sortLegendButton');
 
 const { getter, setter } = getSessionStorageHelper([
   {
@@ -44,22 +45,10 @@ const reDrawChart = (willChangeParamNames = []) => {
   chart.draw();
 };
 
-const eventHandler = {
-  randomColorButtonClick: () => {
-    const savedData = getter.data();
-    const data = savedData || initialData;
-    const randomColors = getGradationHexColors(Object.keys(data).length);
-    setter.colors(randomColors);
-
-    reDrawChart(['colors']);
-  },
-
-  centerHoleSizeRangeChange: (e) => {
-    const nextCenterHoleSize = e.target.value / 10;
-    setter.centerHoleSize(nextCenterHoleSize);
-
-    reDrawChart(['centerHoleSize']);
-  },
+const initCenterHoleSizeRange = () => {
+  centerHoleSizeRange.value = getter.centerHoleSize()
+    ? getter.centerHoleSize() * 10
+    : centerHoleSizeRange.value;
 };
 
 const registerLegendObserver = () => {
@@ -98,10 +87,26 @@ const registerLegendObserver = () => {
   observer.observe(legendUL, { childList: true });
 };
 
-const initCenterHoleSizeRange = () => {
-  centerHoleSizeRange.value = getter.centerHoleSize()
-    ? getter.centerHoleSize() * 10
-    : centerHoleSizeRange.value;
+const eventHandler = {
+  randomColorButtonClick: () => {
+    const savedData = getter.data();
+    const data = savedData || initialData;
+    const randomColors = getGradationHexColors(Object.keys(data).length);
+    setter.colors(randomColors);
+
+    reDrawChart(['colors']);
+  },
+
+  centerHoleSizeRangeChange: (e) => {
+    const nextCenterHoleSize = e.target.value / 10;
+    setter.centerHoleSize(nextCenterHoleSize);
+
+    reDrawChart(['centerHoleSize']);
+  },
+
+  sortLegendButtonClick: () => {
+    location.reload();
+  },
 };
 
 const init = () => {
@@ -112,6 +117,7 @@ const init = () => {
 
   centerHoleSizeRange.addEventListener('change', eventHandler.centerHoleSizeRangeChange, false);
   randomColorButton.addEventListener('click', eventHandler.randomColorButtonClick, false);
+  sortLegendButton.addEventListener('click', eventHandler.sortLegendButtonClick, false);
 };
 
 init();
