@@ -57,6 +57,7 @@ const registerLegendObserver = () => {
     const mutateType = mutation.addedNodes[0] ? 'added' : 'removed';
     const isReDraw = mutation.addedNodes.length > 1 || mutation.removedNodes.length > 1;
     if (isReDraw) return;
+    console.log(mutation);
     console.log(mutateType);
 
     switch (mutateType) {
@@ -67,10 +68,14 @@ const registerLegendObserver = () => {
         const nextData = { ...getter.data(), [dataName]: dataValue };
         setter.data(nextData);
 
-        console.log(nextData);
         break;
       }
       case 'removed': {
+        // FIXME: 시각적으로 보이는 데이터 li 개수가 2개 일때 X 버튼을 누르면, 버튼 클릭 이벤트는 1회인데 옵저버 removed 이벤트는 3회 연속 일어나버림
+        const currData = getter.data();
+        const dataLength = Object.keys(currData).length;
+        if (dataLength === 1) return; // 위 이슈의 임시방편
+
         const removedItem = mutation.removedNodes[0];
         const willRemoveDataName = removedItem.querySelector('.data-name').textContent;
         // eslint-disable-next-line no-unused-vars

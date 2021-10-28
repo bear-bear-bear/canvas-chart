@@ -137,6 +137,11 @@ export default class PieChart {
       e.stopPropagation();
       if (e.target.tagName !== 'BUTTON') return;
       if (e.path[0].id !== 'dataRemoveButton') return;
+      const dataLength = Object.keys(this.data).length;
+      if (dataLength === 1) {
+        alert('데이터는 1개 미만이 될 수 없습니다.');
+        return;
+      }
 
       e.target.closest('li').remove();
     };
