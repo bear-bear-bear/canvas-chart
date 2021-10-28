@@ -1,13 +1,22 @@
 import { drawPieSlice, getGradationHexColors } from './utils';
 
 export default class PieChart {
-  constructor({ canvas, legend, data, colors = getGradationHexColors(10), centerHoleSize = 0 }) {
+  constructor({
+    canvas,
+    legendUL,
+    legendAddSection,
+    data,
+    colors = getGradationHexColors(10),
+    centerHoleSize = 0,
+  }) {
     this.canvas = canvas;
     this.ctx = this.canvas.getContext('2d');
     this.centerX = this.canvas.width / 2;
     this.centerY = this.canvas.height / 2;
     this.radius = Math.min(this.centerX, this.centerY);
-    this.legend = legend;
+    this.legendUL = legendUL;
+    this.legendAddSection = legendAddSection;
+    this.eventRemovers = {};
     this.colors = colors;
     this.centerHoleSize = centerHoleSize;
     this.data = data;
@@ -92,26 +101,76 @@ export default class PieChart {
   }
 
   #drawLegend() {
-    const itemsHTML = this.dataKeys.reduce((acc, currKey, colorIndex) => {
-      const currItem = `
-<li>
-  <div style='background-color: ${this.colors[colorIndex++ % this.colors.length]};'></div>
-  <span class="data-name" title="${currKey}">${currKey}</span>
-  <span class="data-value">${this.sortedData[currKey]}</span>
-  <button>X</button>
-</li>
+    const additionSectionInnerHTML = `
+<label>
+  이름: <input type="text" name="dataName" required />
+</label>
+<label>
+  값: <input type="number" name="dataValue" min="1" required/>
+</label>
+<button type="button" id="dataAddButton" title="Add data">데이터 추가</button>
+    `.trim();
+    const getItemInnerHTML = (backgroundColor, dataName, dataValue) => {
+      return `
+<div style='background-color: ${backgroundColor};'></div>
+<span class="data-name" title="${dataName}">${dataName}</span>
+<span class="data-value">${dataValue}</span>
+<button type="button" id="dataRemoveButton" title="Remove data">X</button>
       `.trim();
+    };
 
-      return acc + currItem;
+    const itemsHTML = this.dataKeys.reduce((acc, currKey, colorIndex) => {
+      const backgroundColor = this.colors[colorIndex++ % this.colors.length];
+      const currItemInnerHTML = getItemInnerHTML(
+        backgroundColor,
+        currKey,
+        this.sortedData[currKey]
+      );
+      const currItemHTML = `<li>${currItemInnerHTML}</li>`;
+
+      return acc + currItemHTML;
     }, '');
 
     const handleRemoveButtonClick = (e) => {
+      e.stopPropagation();
       if (e.target.tagName !== 'BUTTON') return;
+      if (e.path[0].id !== 'dataRemoveButton') return;
+
       e.target.closest('li').remove();
     };
 
-    this.legend.innerHTML = itemsHTML;
-    this.legend.addEventListener('click', handleRemoveButtonClick, false);
+    const handleAddSectionButtonClick = (e) => {
+      e.stopPropagation();
+      if (e.target.tagName !== 'BUTTON') return;
+      if (e.path[0].id !== 'dataAddButton') return;
+
+      const [nameInput, valueInput] = this.legendAddSection.querySelectorAll('input');
+      const randomColorIndex = Math.floor(Math.random() * this.colors.length);
+      const backgroundColor = this.colors[randomColorIndex];
+      const willAddItemInnerHTML = getItemInnerHTML(
+        backgroundColor,
+        nameInput.value,
+        valueInput.value
+      );
+
+      const li = document.createElement('li');
+      li.innerHTML = willAddItemInnerHTML;
+      this.legendUL.appendChild(li);
+    };
+
+    this.legendUL.innerHTML = itemsHTML;
+    this.legendAddSection.innerHTML = additionSectionInnerHTML;
+    this.legendUL.addEventListener('click', handleRemoveButtonClick, false);
+    this.legendAddSection.addEventListener('click', handleAddSectionButtonClick, false);
+
+    this.eventRemovers = {
+      legendUL: () => {
+        this.legendUL.removeEventListener('click', handleRemoveButtonClick, false);
+      },
+      legendAddSection: () => {
+        this.legendAddSection.removeEventListener('click', handleAddSectionButtonClick, false);
+      },
+    };
   }
 
   draw() {
@@ -123,7 +182,11 @@ export default class PieChart {
   }
 
   clear() {
-    this.legend.innerHTML = '';
+    this.legendUL.innerHTML = '';
+    this.legendAddSection.innerHTML = '';
+    for (const param in this.eventRemovers) {
+      this.eventRemovers[param]();
+    }
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.beginPath();

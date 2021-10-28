@@ -15,73 +15,18 @@ body {
 }
 
 main {
-  display: flex;
+  display: grid;
+  grid-template: 
+  "form form" max-content
+  "canvas list" 1fr
+  / 1fr 1fr;
+  gap: 1rem;
   align-items: center;
-  gap: 5rem;
+  justify-items: center;
   position: relative;
   top: 0;
   opacity: 0;
   animation: raise-up 0.7s ease-in-out forwards;
-}
-
-#legend {
-  width: 12rem;
-  height: 15rem;
-  max-height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.33rem;
-  overflow-y: scroll;
-}
-
-#legend::-webkit-scrollbar {
-  width: 10px;
-  background-color: #ccc
-}
-#legend::-webkit-scrollbar-thumb {
-  width: 10px;
-  background-color: #222;
-}
-
-#legend li {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding-right: 2rem; /* For close button */
-  list-style: none;
-}
-
-#legend li > div {
-  width: 1.3rem;
-  height: 1.3rem;
-  flex-shrink: 0;
-}
-
-#legend li > span.data-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-#legend li > span.data-value {
-  color: #777;
-}
-#legend li > span.data-value::before {
-  content: '(';
-}
-#legend li > span.data-value::after {
-  content: ')';
-}
-
-#legend li > button {
-  position: absolute;
-  right: 1rem;
-  background-color: inherit;
-  border: none;
-  font-weight: 700;
-  color: red;
-  cursor: pointer;
 }
 
 @keyframes raise-up {
@@ -94,6 +39,86 @@ main {
     opacity: 1;
     top: 0;
   }
+}
+
+#canvas {
+  grid-area: canvas;
+}
+
+#legendAddSection {
+  grid-area: form;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+#legendAddSection input {
+  width: 7rem;
+}
+
+#legendAddSection button {
+  margin-top: 0.33rem;
+}
+
+#legendUL {
+  grid-area: list;
+  width: 12rem;
+  height: 15rem;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.33rem;
+  overflow-y: scroll;
+}
+
+#legendUL::-webkit-scrollbar {
+  width: 10px;
+  background-color: #ccc
+}
+#legendUL::-webkit-scrollbar-thumb {
+  width: 10px;
+  background-color: #222;
+}
+
+#legendUL li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-right: 2rem; /* For close button */
+  list-style: none;
+}
+
+#legendUL li > div {
+  width: 1.3rem;
+  height: 1.3rem;
+  flex-shrink: 0;
+}
+
+#legendUL li > span.data-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#legendUL li > span.data-value {
+  color: #777;
+}
+#legendUL li > span.data-value::before {
+  content: '(';
+}
+#legendUL li > span.data-value::after {
+  content: ')';
+}
+
+#legendUL li > button {
+  position: absolute;
+  right: 1rem;
+  background-color: inherit;
+  border: none;
+  font-weight: 700;
+  color: red;
+  cursor: pointer;
 }
 
 footer {

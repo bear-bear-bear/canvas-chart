@@ -3,7 +3,8 @@ import initialData from './data';
 import { getGradationHexColors, getSessionStorageHelper } from './utils';
 
 const canvas = document.getElementById('canvas');
-const legend = document.getElementById('legend');
+const legendUL = document.getElementById('legendUL');
+const legendAddSection = document.getElementById('legendAddSection');
 const randomColorButton = document.getElementById('randomColorButton');
 const centerHoleSizeRange = document.getElementById('centerHoleSizeRange');
 
@@ -24,13 +25,14 @@ const { getter, setter } = getSessionStorageHelper([
 
 const chart = new PieChart({
   canvas,
-  legend,
+  legendUL,
+  legendAddSection,
   data: getter.data(),
   colors: getter.colors(),
   centerHoleSize: getter.centerHoleSize(),
 });
 
-const reDrawChart = (willChangeParamNames = ['']) => {
+const reDrawChart = (willChangeParamNames = []) => {
   chart.clear();
 
   const willChangeParams = willChangeParamNames.reduce((acc, paramName) => {
@@ -63,23 +65,25 @@ const eventHandler = {
 const registerLegendObserver = () => {
   const observer = new MutationObserver(([mutation]) => {
     const mutateType = mutation.addedNodes[0] ? 'added' : 'removed';
+    const isReDraw = mutation.addedNodes.length > 1 || mutation.removedNodes.length > 1;
+    if (isReDraw) return;
+    console.log(mutateType);
 
     switch (mutateType) {
       case 'added': {
         const addedItem = mutation.addedNodes[0];
-        const dataName = addedItem.querySelector('.data-name').textContext;
-        const dataValue = addedItem.querySelector('.data-value').textContext;
+        const dataName = addedItem.querySelector('.data-name').textContent;
+        const dataValue = Number(addedItem.querySelector('.data-value').textContent);
         const nextData = { ...getter.data(), [dataName]: dataValue };
         setter.data(nextData);
 
+        console.log(nextData);
         break;
       }
       case 'removed': {
-        const isReDraw = mutation.removedNodes.length > 1;
-        if (isReDraw) return;
-
         const removedItem = mutation.removedNodes[0];
         const willRemoveDataName = removedItem.querySelector('.data-name').textContent;
+        // eslint-disable-next-line no-unused-vars
         const { [willRemoveDataName]: _, ...nextData } = getter.data();
         setter.data(nextData);
 
@@ -90,7 +94,8 @@ const registerLegendObserver = () => {
 
     reDrawChart(['data']);
   });
-  observer.observe(legend, { childList: true });
+
+  observer.observe(legendUL, { childList: true });
 };
 
 const initCenterHoleSizeRange = () => {
