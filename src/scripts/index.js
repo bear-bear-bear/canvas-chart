@@ -8,6 +8,7 @@ const legendAddSection = document.getElementById('legendAddSection');
 const randomColorButton = document.getElementById('randomColorButton');
 const centerHoleSizeRange = document.getElementById('centerHoleSizeRange');
 const sortLegendButton = document.getElementById('sortLegendButton');
+const initialDataCallButton = document.getElementById('initialDataCallButton');
 
 const { getter, setter } = getSessionStorageHelper([
   {
@@ -107,6 +108,11 @@ const eventHandler = {
   sortLegendButtonClick: () => {
     location.reload();
   },
+
+  initialDataCallButtonClick: () => {
+    window.sessionStorage.clear();
+    location.reload();
+  },
 };
 
 const init = () => {
@@ -118,6 +124,7 @@ const init = () => {
   centerHoleSizeRange.addEventListener('change', eventHandler.centerHoleSizeRangeChange, false);
   randomColorButton.addEventListener('click', eventHandler.randomColorButtonClick, false);
   sortLegendButton.addEventListener('click', eventHandler.sortLegendButtonClick, false);
+  initialDataCallButton.addEventListener('click', eventHandler.initialDataCallButtonClick, false);
 };
 
 init();
