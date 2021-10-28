@@ -101,23 +101,25 @@ export default class PieChart {
   }
 
   #drawLegend() {
-    const additionSectionInnerHTML = `
-<label>
-  이름: <input type="text" name="dataName" required />
-</label>
-<label>
-  값: <input type="number" name="dataValue" min="1" required/>
-</label>
-<button type="button" id="dataAddButton" title="Add data">추가 또는 수정</button>
-    `.trim();
+    const YOUTUBE_SEARCH = 'https://www.youtube.com/results?search_query=';
     const getItemInnerHTML = (backgroundColor, dataName, dataValue) => {
+      const linkHref = YOUTUBE_SEARCH + dataName.replaceAll(' ', '+');
       return `
 <div style='background-color: ${backgroundColor};'></div>
-<span class="data-name" title="${dataName}">${dataName}</span>
+<a href=${linkHref} class="data-name" title="${dataName}" target="_blank" rel="noopener noreferrer">${dataName}</a>
 <span class="data-value">${dataValue}</span>
 <button type="button" id="dataRemoveButton" title="Remove data">X</button>
       `.trim();
     };
+    const additionSectionInnerHTML = `
+    <label>
+      이름: <input type="text" name="dataName" required />
+    </label>
+    <label>
+      값: <input type="number" name="dataValue" min="1" required/>
+    </label>
+    <button type="button" id="dataAddButton" title="Add data">추가 또는 수정</button>
+        `.trim();
 
     const itemsHTML = this.dataKeys.reduce((acc, currKey, colorIndex) => {
       const backgroundColor = this.colors[colorIndex++ % this.colors.length];

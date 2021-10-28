@@ -95,11 +95,12 @@ main {
   flex-shrink: 0;
 }
 
-#legendUL li > span.data-name {
+#legendUL li > a.data-name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 0.9rem;
+  text-decoration: none;
 }
 
 #legendUL li > span.data-value {
