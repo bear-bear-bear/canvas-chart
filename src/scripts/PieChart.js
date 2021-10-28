@@ -108,7 +108,7 @@ export default class PieChart {
 <label>
   값: <input type="number" name="dataValue" min="1" required/>
 </label>
-<button type="button" id="dataAddButton" title="Add data">데이터 추가 || 수정</button>
+<button type="button" id="dataAddButton" title="Add data">추가 또는 수정</button>
     `.trim();
     const getItemInnerHTML = (backgroundColor, dataName, dataValue) => {
       return `
