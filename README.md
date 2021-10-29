@@ -4,7 +4,7 @@
 
 ---
 
-<img src="https://github.com/bear-bear-bear/canvas-chart/blob/master/img/preview.PNG" width="100%" />
+<img src="https://github.com/bear-bear-bear/canvas-chart/blob/master/preview.png" width="100%" />
 
 - Go to website → <a href="https://bear-bear-bear.github.io/canvas-chart/">바로가기</a>
   <br/><br/>
