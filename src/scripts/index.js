@@ -1,5 +1,5 @@
 import PieChart from './PieChart';
-import initialData from './initialData.json';
+import * as initialValues from './initialValues';
 import { getGradationHexColors, getSessionStorageHelper } from './utils';
 
 const canvas = document.getElementById('canvas');
@@ -13,15 +13,15 @@ const initialDataCallButton = document.getElementById('initialDataCallButton');
 const { getter, setter } = getSessionStorageHelper([
   {
     name: 'data',
-    initialValue: initialData,
+    initialValue: initialValues.data,
   },
   {
     name: 'colors',
-    initialValue: ['#fde23e', '#f16e23', '#57d9ff', '#937e88'],
+    initialValue: initialValues.colors,
   },
   {
     name: 'centerHoleSize',
-    initialValue: 0.4,
+    initialValue: initialValues.centerHoleSize,
   },
 ]);
 
@@ -93,7 +93,7 @@ const registerLegendObserver = () => {
 const eventHandler = {
   randomColorButtonClick: () => {
     const savedData = getter.data();
-    const data = savedData || initialData;
+    const data = savedData || initialValues.data;
     const randomColors = getGradationHexColors(Object.keys(data).length);
     setter.colors(randomColors);
 
