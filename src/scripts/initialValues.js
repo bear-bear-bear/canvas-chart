@@ -21,6 +21,17 @@ export const data = {
   'The Immaculate Collection - 마돈나': 31000000,
 };
 
-export const colors = ['#fde23e', '#f16e23', '#57d9ff', '#937e88'];
+export const colors = [
+  '#D90000',
+  '#FA371D',
+  '#FF5836',
+  '#FF764F',
+  '#FF9468',
+  '#FFB182',
+  '#FFCF9D',
+  '#FFCFAA',
+  '#FFCFB8',
+  '#FFCFC1',
+];
 
 export const centerHoleSize = 0.4;
